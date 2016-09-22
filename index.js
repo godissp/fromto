@@ -3,17 +3,17 @@
  */
 define(['underscore'],
     function(_) {
-        var eventBus = {};
+        var ft = {};
         var pageEvent = {};
         var asyncEvent = [];
         var timeout;
         var triggerMiddleware = [];
 
         /**
-         * 初始化eventBus
+         * 初始化ft
          * @param events obj对象
          */
-        eventBus.bind =  eventBus.bindNoLog = function(events){
+        ft.bind = function(events){
             _.each(events,function(v,key){
                 pageEvent[key] = v
             })
@@ -23,7 +23,7 @@ define(['underscore'],
          * 解绑事件
          * @params string
          */
-        eventBus.unbind = eventBus.unbindNoLog = function(key){
+        ft.unbind = function(key){
             if(pageEvent[key]){
                 delete pageEvent[key]
             }
@@ -33,7 +33,7 @@ define(['underscore'],
          * 添加中间件
          * @params string
          */
-        eventBus.addMiddleware = function(fn){
+        ft.addMiddleware = function(fn){
             triggerMiddleware.splice(1,0,fn)
         }
 
@@ -47,7 +47,7 @@ define(['underscore'],
          * 触发事件
          * @params string
          */
-        eventBus.trigger = function(){
+        ft.trigger = function(){
             var index = triggerMiddleware.length-1;
             var originArgs = Array.prototype.slice.call(arguments)
             var event = originArgs[0];
@@ -60,7 +60,7 @@ define(['underscore'],
                 event:event,
                 args:args,
                 pageEvent:pageEvent,
-                eventBus:eventBus
+                ft:ft
             }
             return player.next()
         }
@@ -68,7 +68,7 @@ define(['underscore'],
         /**
          * 事件节流机制触发函数
          */
-        eventBus.triggerAsyncOnce = function(){
+        ft.triggerAsyncOnce = function(){
             clearTimeout(timeout)
             asyncEvent.push(arguments);
             timeout = setTimeout(function(){
@@ -88,7 +88,7 @@ define(['underscore'],
                 if(done){
                     return
                 }else{
-                    eventBus.trigger.apply(eventBus,v);
+                    ft.trigger.apply(ft,v);
                     eventDone.push(v[0]);
                 }
             })
@@ -109,7 +109,7 @@ define(['underscore'],
         /**
          * config 函数
          */
-        eventBus.config = function(){}
+        ft.config = function(){}
 
-        return eventBus;
+        return ft;
 })

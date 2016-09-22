@@ -2,14 +2,14 @@
  * Created by shupeng on 2016/9/19.
  */
 
-window.eventBus = {
+window.ft = {
     pageEvent:{}
 }
 var synctimeout;
 module.exports = function(params){
     var event = this.event;
     var args = this.args;
-    var pageEvent = window.eventBus.pageEvent = this.pageEvent
+    var pageEvent = window.ft.pageEvent = this.pageEvent
     if(pageEvent[event]){
         logEventBefore(event,args)
         var result = this.next()

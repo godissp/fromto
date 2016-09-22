@@ -3,13 +3,13 @@
  */
 module.exports = function(){
     var event = this.event;
-    var eventBus = this.eventBus;
+    var ft = this.ft;
     var args = this.args;
     if(isArray(event)){
         for(var i=0;i<event.length;i++){
             var newArgs = copyArray(args)
             newArgs.splice(0,0,event[i])
-            eventBus.trigger.apply(eventBus,newArgs);
+            ft.trigger.apply(ft,newArgs);
         }
         return
     }else{
