@@ -1,7 +1,7 @@
 /**
  * Created by shupeng on 2016/9/19.
  */
-var _ = require('underscore')
+var difference = require('lodash.difference')
 module.exports = function(params){
     var modulesArray = params.modulesArray;//加载的模块
     var dependence = params.dependence;//定义事件所依赖的模块 配置文件
@@ -11,7 +11,7 @@ module.exports = function(params){
 
         if(log){
             var eventDepds = dependence?dependence[key]:true;
-            var leftDepds = _.difference(eventDepds,modulesArray)
+            var leftDepds = difference(eventDepds,modulesArray)
             if(!eventDepds){
                 logEventBindError(key)
                 return
@@ -27,7 +27,7 @@ module.exports = function(params){
             if(!eventDepds){
                 return
             }
-            if(_.difference(eventDepds,modulesArray).length == 0){
+            if(difference(eventDepds,modulesArray).length == 0){
                 var result = this.next()
                 return result
             }
