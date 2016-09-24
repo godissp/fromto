@@ -1,0 +1,20 @@
+{
+  "_args": [
+    [
+      "fromto@~0.1.0"
+    ]
+  ],
+  "_npmUser": {
+    "email": "godissp100@gmail.com",
+    "name": "gonabe"
+  },
+  "author": {
+    "email": "godissp100@gmail.com",
+    "name": "super"
+  },
+  "homepage": "https://github.com/godissp/fromto",
+  "main": "./index.js",
+  "name": "fromto",
+  "scripts": {},
+  "version": "0.1.1"
+}
