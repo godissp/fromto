@@ -6,9 +6,45 @@
 
 </head>
 <body>
-    <div onClick="ft.trigger('eventA')" style="width: 50px;height: 50px;background: yellow"></div>
+    <div onClick="abc()" style="width: 50px;height: 50px;background: yellow"></div>
 
 </body>
 <!--<script src="http://img4.tuniucdn.com/j/20150408/common/require-2.1.15.min.js" data-main="entry.amd.js"></script>-->
 <script src="dest/entry.js"></script>
+<script>
+    ft.channel('A').channel('B').bind({
+        eventA:function(v){
+            console.log(this)
+            var self = this
+            console.log(self.ft.trigger('eventB','b'))
+            setTimeout(function(){
+                self.resolve('A')
+            },3000)
+            return v
+        },
+        eventB:function(v){
+            console.log(this)
+            var self = this
+            setTimeout(function(){
+                self.resolve('B')
+            },0)
+            return v
+        }
+    })
+
+
+    function abc(){
+        var a = ft.channel('A').channel('B').trigger(['eventA','eventB'],'all')
+        console.log(a)
+        a.all(function(v){
+            alert('sucess:'+v)
+        },function(){
+            alert('error:'+v)
+        })
+    }
+
+
+
+
+</script>
 </html>
