@@ -16,10 +16,15 @@
   "main": "./index.js",
   "name": "fromto",
   "scripts": {},
-  "version": "0.1.1",
+  "version": "0.1.2",
   "dependencies": {
     "underscore": "^1.8.3",
     "virtual-dom": "^2.1.1",
     "webpack": "^1.13.2"
+  },
+  "scripts": {
+    "release": "npm run release-patch",
+    "release-patch": "npm version patch"
   }
+
 }
