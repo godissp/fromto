@@ -21,7 +21,7 @@ module.exports = function(){
     try{
         var result = this.next();
     }catch(e){
-
+        window['console']?console.log('Event "' + event + '" ', e.stack ):''
     }finally{
         eventDepth--
         parents.pop();

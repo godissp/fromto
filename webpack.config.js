@@ -10,8 +10,8 @@ const wpConfig = {
     },
     output: {
         path: path.join(rootPath,'dest'),
-        libraryTarget:'amd',
-        filename: "[name].amd.js"
+        libraryTarget:'umd',
+        filename: "[name].umd.js"
     },
     plugins:[
         new webpack.optimize.UglifyJsPlugin({

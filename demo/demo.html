@@ -12,7 +12,7 @@
 <!--<script src="http://img4.tuniucdn.com/j/20150408/common/require-2.1.15.min.js" data-main="entry.amd.js"></script>-->
 <script src="dest/entry.js"></script>
 <script>
-    ft.channel('A').channel('B').bind({
+    eventBus.channel('A').channel('B').bind({
         eventA:function(v){
             console.log(this)
             var self = this
@@ -31,7 +31,6 @@
             return v
         }
     })
-
 
     function abc(){
         var a = ft.channel('A').channel('B').trigger(['eventA','eventB'],'all')

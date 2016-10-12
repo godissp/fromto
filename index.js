@@ -1,35 +1,30 @@
 /**
  * Created by shupeng on 2016/7/13.
  */
-
+var each = require('./lib/each')
 var isArray = require('./lib/isArray')
 var copyArray = require('./lib/copyArray')
-var eventTree = require('./middlewares/eventTreeMiddleware')
-var ft = getFtInstance('root');
+var uniqueLast = require('./lib/uniqueLast')
+var eventTree = require('./middlewares/baseMiddleware.js')
 var initMiddleware = [triggerFunc,eventTree]
 var _ = {};
 _.each = require('./lib/each')
 _.some = require('./lib/some')
 _.rest = require('./lib/rest')
 
-function getFtInstance(name){
-    return {
-        channelName:name,
-        allEvents : {},
-        childChannels : {},
-        asyncEvent : [],
-        timeout : null,
-        triggerMiddleware : initMiddleware,
-        bind : bind,
-        channel : channel,
-        unbind : unbind,
-        addMiddleware : addMiddleware,
-        trigger : trigger,
-        triggerAsyncOnce : triggerAsyncOnce
-    }
 
+/**
+ * 事件广播函数
+ */
+function broadcast(){
+    var self = this;
+    var originArgs = Array.prototype.slice.call(arguments)
+    self.trigger.apply(self,originArgs)
+    each(self.childChannels,function(child){
+        child.broadcast.apply(child,originArgs)
+
+    })
 }
-
 
 /**
  * 初始化ft
@@ -156,7 +151,7 @@ function trigger(){
 
     var result = {
         event:event,
-        value:value,
+        returnValue:value,
         then:function(success,error){
             thenIsDefine = true
             successFunc = success;
@@ -194,18 +189,15 @@ function triggerAsyncOnce(){
  */
 function asyncEventStart(){
     var self  = this;
-    var eventDone = []
-    _.each(self.asyncEvent,function(v,i){
-        var done  = _.some(eventDone,function(m){
-            return m == v[0]
-        })
-        if(done){
-            return
-        }else{
-            self.trigger.apply(self,v);
-            eventDone.push(v[0]);
-        }
+    var eventDone = [];
+    var resultEvent = uniqueLast(self.asyncEvent,function(v,i){
+        return v[0];
     })
+    _.each(resultEvent,function(v,i){
+        self.trigger.apply(self,v);
+        eventDone.push(v[0]);
+    })
+    self.asyncEvent = [];
 }
 
 /**
@@ -231,6 +223,26 @@ function channel(name){
 
     return  self.childChannels[name];
 }
+
+function getFtInstance(name){
+    return {
+        channelName:name,
+        allEvents : {},
+        childChannels : {},
+        asyncEvent : [],
+        timeout : null,
+        triggerMiddleware : initMiddleware,
+        bind : bind,
+        channel : channel,
+        unbind : unbind,
+        addMiddleware : addMiddleware,
+        trigger : trigger,
+        triggerAsyncOnce : triggerAsyncOnce,
+        broadcast:broadcast
+    }
+}
+
+var ft = getFtInstance('root');
 
 global.ft = ft
 

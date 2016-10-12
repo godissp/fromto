@@ -2,19 +2,16 @@
  * Created by shupeng on 2016/9/19.
  */
 
-window.ft = {
-    pageEvent:{}
-}
 var synctimeout;
 module.exports = function(params){
     var event = this.event;
     var args = this.args;
-    var pageEvent = window.ft.pageEvent = this.pageEvent
-    if(pageEvent[event]){
+    var allEvents = this.allEvents;
+    var result
+    if(allEvents[event]){
         logEventBefore(event,args)
-        var result = this.next()
+        result = this.next()
         logEventAfter(event,result)
-        return result
     }else{
         logEventErr(event)
     }
@@ -23,7 +20,7 @@ module.exports = function(params){
     synctimeout = setTimeout(function(){
         console.log('%c------------------------同步事件执行完毕------------------------','color:#4CAF50')
     },0)
-
+    return result
     /**
      * 日志处理逻辑
      */

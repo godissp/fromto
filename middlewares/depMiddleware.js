@@ -1,7 +1,7 @@
 /**
  * Created by shupeng on 2016/9/19.
  */
-var difference = require('lodash.difference')
+var difference = require('../lib/difference')
 module.exports = function(params){
     var modulesArray = params.modulesArray;//加载的模块
     var dependence = params.dependence;//定义事件所依赖的模块 配置文件
